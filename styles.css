@@ -1,0 +1,340 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+}
+
+
+.chat-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+.chat-header {
+    background: #1a1a1a;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+.chat-box {
+    flex: 1;
+    padding: 15px 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+.chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+.chat-box::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
+}
+
+
+.message-container {
+    display: flex;
+    align-items: flex-start;
+    max-width: 80%;
+    flex-direction: column;
+}
+
+
+.user {
+    align-self: flex-end;
+}
+
+
+.user .message {
+    background: rgba(43,134,188,255); 
+    color: white;
+    border-radius: 12px;
+    padding: 14px;
+    max-width: 100%;
+    font-size: 16px;
+    word-wrap: break-word;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15); 
+}
+
+.bot .message {
+    background: rgba(43,134,188,255);
+    color: white;
+    border-radius: 12px;
+    padding: 14px;
+    max-width: 100%;
+    font-size: 16px;
+    word-wrap: break-word;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15); 
+}
+
+
+.bot {
+    align-self: flex-start;
+}
+
+.timestamp {
+    font-size: 12px;
+    opacity: 0.7;
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+    font-weight: normal;
+}
+
+.response-time {
+    font-size: 0.7rem;
+    color: #888;
+    text-align: right;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.input-area {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #1a1a1a;
+    gap: 10px;
+}
+
+#user-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 16px;
+    resize: none;
+    min-height: 75px;
+    max-height: 100px;
+    transition: border 0.3s ease-in-out;
+}
+
+#user-input:focus {
+    border: 2px solid #007bff; 
+}
+
+#send-btn {
+    background: #007bff; 
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+#send-btn::before {
+    content: "\2191"; 
+    font-size: 22px;
+}
+
+#send-btn:hover {
+    background: #0056b3; 
+    transform: scale(1.1);
+}
+
+.attach-btn {
+    background: #007bff; 
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.attach-btn::before {
+    content: "\002B"; 
+    font-size: 26px;
+}
+
+.attach-btn:hover {
+    background: #0056b3; 
+    transform: scale(1.1);
+}
+
+.pdf-preview {
+    display: none;
+    align-items: center;
+    background: rgba(43,134,188,255);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: white;
+    width: 20%;
+    margin-bottom: 8px;
+}
+
+.pdf-preview-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(38, 0, 255, 0.1);
+    border-radius: 8px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.pdf-icon-container {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.pdf-icon {
+    font-size: 18px;
+}
+
+.pdf-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-name {
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.pdf-subtext {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.pdf-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: rgba(46, 36, 192, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    max-width: 100%;
+}
+
+.pdf-bubble-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(38, 0, 255, 0.1);
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.pdf-bubble a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    text-decoration: underline;
+}
+
+.pdf-bubble a:hover {
+    color: #888;
+}
+
+.remove-pdf {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.remove-pdf:hover {
+    color: #cc0000;
+}
+
+.processing-text {
+    margin-bottom: 8px;
+}
+
+.success-message {
+    color: #28a745;
+}
+
+.error-message {
+    color: #dc3545;
+}
+
+.typing-indicator {
+    display: flex;
+    padding: 10px;
+}
+
+.typing-indicator span {
+    height: 10px;
+    width: 10px;
+    float: left;
+    margin: 0 1px;
+    background-color: #9E9EA1;
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4;
+}
+
+.typing-indicator span:nth-of-type(1) {
+    animation: 1s blink infinite 0.3333s;
+}
+
+.typing-indicator span:nth-of-type(2) {
+    animation: 1s blink infinite 0.6666s;
+}
+
+.typing-indicator span:nth-of-type(3) {
+    animation: 1s blink infinite 0.9999s;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+}
