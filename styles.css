@@ -11,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+    background: linear-gradient(135deg, #061A40, #000207);
 }
 
 
@@ -70,8 +70,8 @@ body {
 
 
 .user .message {
-    background: rgba(43,134,188,255); 
-    color: white;
+    background: #B9D6F2; 
+    color: rgb(12, 21, 75);
     border-radius: 12px;
     padding: 14px;
     max-width: 100%;
@@ -81,8 +81,8 @@ body {
 }
 
 .bot .message {
-    background: rgba(43,134,188,255);
-    color: white;
+    background: #B9D6F2;
+    color: rgb(12, 21, 75);
     border-radius: 12px;
     padding: 14px;
     max-width: 100%;
@@ -137,12 +137,12 @@ body {
 }
 
 #user-input:focus {
-    border: 2px solid #007bff; 
+    border: 2px solid #B9D6F2; 
 }
 
 #send-btn {
-    background: #007bff; 
-    color: white;
+    background: #B9D6F2; 
+    color: rgb(12, 21, 75);
     border: none;
     padding: 10px;
     border-radius: 50%;
@@ -162,13 +162,13 @@ body {
 }
 
 #send-btn:hover {
-    background: #0056b3; 
+    background: #143b83; 
     transform: scale(1.1);
 }
 
 .attach-btn {
-    background: #007bff; 
-    color: white;
+    background: #B9D6F2; 
+    color: rgb(12, 21, 75);
     border: none;
     width: 45px;
     height: 45px;
@@ -187,14 +187,19 @@ body {
 }
 
 .attach-btn:hover {
-    background: #0056b3; 
+    background: #143b83; 
     transform: scale(1.1);
+}
+
+.user .pdf-bubble-card {
+    background: #061A40; /* Same as .pdf-preview-card */
+    color: white;
 }
 
 .pdf-preview {
     display: none;
     align-items: center;
-    background: rgba(43,134,188,255);
+    background: #09214d;
     padding: 10px;
     border-radius: 10px;
     font-size: 14px;
@@ -208,7 +213,7 @@ body {
     align-items: center;
     gap: 12px;
     padding: 10px;
-    background: rgba(38, 0, 255, 0.1);
+    background: #061A40;
     border-radius: 8px;
     width: 100%;
     font-size: 14px;
@@ -251,7 +256,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background: rgba(46, 36, 192, 0.1);
+    background: rgba(7, 6, 19, 0.1);
     padding: 12px;
     border-radius: 8px;
     max-width: 100%;
@@ -262,7 +267,7 @@ body {
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background: rgba(38, 0, 255, 0.1);
+    background: rgba(15, 5, 71, 0.1);
     border-radius: 8px;
     font-size: 14px;
     width: 100%;
@@ -272,7 +277,7 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
-    color: white;
+    color: rgb(15, 1, 1);
     text-decoration: underline;
 }
 
@@ -281,28 +286,40 @@ body {
 }
 
 .remove-pdf {
-    background: none;
+    background: rgba(70, 130, 180, 0.1); /* steelblue light */
     border: none;
-    color: #ff4d4d;
-    font-size: 14px;
+    color: #061A40;
+    font-size: 16px;
     cursor: pointer;
     margin-left: auto;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
 }
 
 .remove-pdf:hover {
-    color: #cc0000;
+    background: rgba(70, 130, 180, 0.3); /* deeper blue on hover */
+    color: #061A40;
+    transform: scale(1.1);
 }
+
 
 .processing-text {
     margin-bottom: 8px;
 }
 
 .success-message {
-    color: #28a745;
+    color: #061A40;
 }
 
 .error-message {
-    color: #dc3545;
+    color: #061A40;
 }
 
 .typing-indicator {
@@ -332,6 +349,65 @@ body {
 .typing-indicator span:nth-of-type(3) {
     animation: 1s blink infinite 0.9999s;
 }
+input[type="file"]::-webkit-file-upload-button {
+    background: #B9D6F2;
+    color: rgb(12, 21, 75);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background: #143b83;
+    color: white;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #B9D6F2;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 9999;
+    width: 300px;
+}
+
+.custom-alert p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.ok-button {
+    background-color: #061A40; /* Blue button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.ok-button:hover {
+    background-color: #0056b3; /* Darker blue when hovered */
+}
+button:disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #ccc; /* Optional: Change background */
+    color: #666; /* Optional: Change text color */
+    box-shadow: none; /* Remove hover shadows */
+    transition: none; /* Remove transition effects */
+}
+
+
 
 @keyframes blink {
     50% {

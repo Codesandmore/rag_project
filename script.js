@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const pdfPreview = document.getElementById("pdf-preview");
     
     let uploadedFile = null;
-    
+    let chatStarted = false;
+    let pdfDisplayed = false;
+
     // Prevent any unintentional form submissions throughout the document
     document.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -42,7 +44,8 @@ document.addEventListener("DOMContentLoaded", function() {
             
             console.log("Processing PDF:", file.name);
             uploadedFile = file;
-            
+            if (e) e.preventDefault();
+
             // Show file in preview area
             pdfPreview.style.display = "flex";
             pdfPreview.innerHTML = `
@@ -55,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     <button type="button" class="remove-pdf-btn">×</button>
                 </div>
             `;
-            
+            pdfDisplayed = false; 
+
             // Add event listener to remove button
             const removeBtn = document.querySelector(".remove-pdf-btn");
             if (removeBtn) {
@@ -66,38 +70,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     return false;
                 });
             }
-            
-            // Show file in chat
-            const messageContainer = document.createElement("div");
-            messageContainer.classList.add("message-container", "user");
-            
-            const pdfBubble = document.createElement("div");
-            pdfBubble.classList.add("message", "pdf-bubble");
-            
-            const fileNameContainer = document.createElement("div");
-            fileNameContainer.classList.add("pdf-bubble-card");
-            
-            const iconContainer = document.createElement("div");
-            iconContainer.classList.add("pdf-icon-container");
-            iconContainer.innerHTML = `<span class="pdf-icon">📄</span>`;
-            
-            const textContainer = document.createElement("div");
-            textContainer.classList.add("pdf-info");
-            textContainer.innerHTML = `
-                <span class="pdf-name">${file.name}</span>
-                <span class="pdf-subtext">PDF</span>
-            `;
-            
-            fileNameContainer.appendChild(iconContainer);
-            fileNameContainer.appendChild(textContainer);
-            pdfBubble.appendChild(fileNameContainer);
-            messageContainer.appendChild(pdfBubble);
-            chatBox.appendChild(messageContainer);
-            chatBox.scrollTop = chatBox.scrollHeight;
-            
-            // Upload without page reload
-            uploadFileAsync(file);
-            
             return false;
         });
     }
@@ -116,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="processing-text">Processing PDF "${file.name}"...</div>
             <div class="typing-indicator"><span></span><span></span><span></span></div>
         `;
-        
+
         processingContainer.appendChild(processingMessage);
         chatBox.appendChild(processingContainer);
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -164,6 +136,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             `;
             
+            chatStarted = true;
+            console.log("Enabling user input...");
+                userInput.disabled = false;
+             uploadedFile = file;            
+            
         } catch (error) {
             console.error("Upload error:", error);
             processingMessage.innerHTML = `
@@ -182,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function() {
         uploadedFile = null;
         pdfPreview.innerHTML = "";
         pdfPreview.style.display = "none";
+        pdfDisplayed = false;
         fileInput.value = "";
     }
     
@@ -207,12 +185,51 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
+    
     // Main message sending function
     async function sendMessage() {
+        if (!chatStarted && !uploadedFile) {
+            showCustomAlert("Please upload a PDF to start the chat.");
+            return;
+        }
+        
         const messageText = userInput.value.trim();
         if (!messageText && !uploadedFile) return;
         
         console.log("Sending message:", messageText);
+        if (uploadedFile && !pdfDisplayed) {
+            pdfDisplayed = true; 
+
+            // Create user PDF message
+            const messageContainer = document.createElement("div");
+            messageContainer.classList.add("message-container", "user");
+        
+            const pdfBubble = document.createElement("div");
+            pdfBubble.classList.add("message", "pdf-bubble");
+        
+            const fileNameContainer = document.createElement("div");
+            fileNameContainer.classList.add("pdf-bubble-card");
+        
+            const iconContainer = document.createElement("div");
+            iconContainer.classList.add("pdf-icon-container");
+            iconContainer.innerHTML = `<span class="pdf-icon">📄</span>`;
+        
+            const textContainer = document.createElement("div");
+            textContainer.classList.add("pdf-info");
+            textContainer.innerHTML = `
+                <span class="pdf-name">${uploadedFile.name}</span>
+                <span class="pdf-subtext">PDF</span>
+            `;
+        
+            fileNameContainer.appendChild(iconContainer);
+            fileNameContainer.appendChild(textContainer);
+            pdfBubble.appendChild(fileNameContainer);
+            messageContainer.appendChild(pdfBubble);
+            chatBox.appendChild(messageContainer);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            //removePDF();
+        
+        }
         
         // Process user message
         if (messageText) {
@@ -298,5 +315,56 @@ document.addEventListener("DOMContentLoaded", function() {
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         }
+       
+ 
     }
-});
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Enter" && !e.shiftKey && uploadedFile && document.activeElement !== userInput) {
+            e.preventDefault();
+            e.stopPropagation();
+            sendMessage();
+            return false;
+        }
+    });
+    
+    function showCustomAlert(message) {
+        // Disable interaction
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+        attachBtn.disabled = true;
+    
+        // Create overlay to block clicks
+        const overlay = document.createElement("div");
+        overlay.classList.add("alert-overlay");
+    
+        // Create the custom alert container
+        const alertBox = document.createElement("div");
+        alertBox.classList.add("custom-alert");
+    
+        // Create the message element
+        const alertMessage = document.createElement("p");
+        alertMessage.textContent = message;
+    
+        // Create the OK button
+        const okButton = document.createElement("button");
+        okButton.textContent = "OK";
+        okButton.classList.add("ok-button");
+    
+        // On clicking OK, remove alert and re-enable everything
+        okButton.addEventListener("click", () => {
+            document.body.removeChild(overlay);
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            attachBtn.disabled = false;
+        });
+    
+        alertBox.appendChild(alertMessage);
+        alertBox.appendChild(okButton);
+        overlay.appendChild(alertBox);
+        document.body.appendChild(overlay);
+    }
+    
+        
+}
+
+);
